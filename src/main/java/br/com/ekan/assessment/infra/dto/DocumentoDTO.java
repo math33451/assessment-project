@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper=true)
 public class DocumentoDTO extends BaseDocumentDTO{
 
-
+	private String tipoDocumento;
+	private String descricao;
 
 }
