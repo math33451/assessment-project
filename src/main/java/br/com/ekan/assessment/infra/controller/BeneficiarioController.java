@@ -13,29 +13,39 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.ekan.assessment.infra.domain.Documento;
 import br.com.ekan.assessment.infra.dto.BeneficiarioDTO;
+import br.com.ekan.assessment.infra.repository.DocumentoRepository;
 import br.com.ekan.assessment.infra.service.BeneficiarioService;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 @RestController
-@RequestMapping("beneficiario")
+@RequestMapping("/beneficiario")
 public class BeneficiarioController {
 
 	@Autowired
 	private BeneficiarioService beneficiarioService;
+	
+	@Autowired
+	private DocumentoRepository documento;
+	
+	@GetMapping("/documento")
+	public List<Documento> listar(){
+		return documento.findAll();
+	}
 
 	@GetMapping()
 	public List<BeneficiarioDTO> listarTodosBeneficiarios(){
 		return beneficiarioService.findAll();
 	}
 	
-	@GetMapping("/{id}")
+	@GetMapping("/lista-documentos/{id}")
 	public BeneficiarioDTO buscarDocumentosPorId(@PathVariable Long id) throws Exception{
-		return beneficiarioService.findById(id);
+		return beneficiarioService.findDocumentosById(id);
 	}
 	
-	@PostMapping("/save")
+	@PostMapping("/salvar")
 	public ResponseEntity<?> salvarBeneficiario(@RequestBody BeneficiarioDTO beneficiario) throws Exception{
 		beneficiarioService.save(beneficiario);
 		return ResponseEntity.ok("Novo membro salvo com sucesso.");

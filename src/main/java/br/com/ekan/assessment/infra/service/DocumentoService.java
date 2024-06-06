@@ -1,12 +1,78 @@
 package br.com.ekan.assessment.infra.service;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.com.ekan.assessment.infra.domain.Beneficiario;
+import br.com.ekan.assessment.infra.domain.Documento;
+import br.com.ekan.assessment.infra.dto.BeneficiarioDTO;
+import br.com.ekan.assessment.infra.dto.DocumentoDTO;
+import br.com.ekan.assessment.infra.exception.BeneficiarioException;
+import br.com.ekan.assessment.infra.exception.DocumentoException;
+import br.com.ekan.assessment.infra.mapper.DocumentoMapper;
+import br.com.ekan.assessment.infra.repository.DocumentoRepository;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 @Service
+@Transactional
 public class DocumentoService {
 
+	@Autowired
+	private DocumentoRepository documentoRepository;
+	
+	@Autowired
+	private DocumentoMapper documentoMapper;
+	
+	public void salvarTodosDocumentos(BeneficiarioDTO beneficiarioDTO, Beneficiario beneficiario) {
+		validaDocumentos(beneficiarioDTO);
+		List<Documento> listaDomain = new ArrayList<>();
+		for(DocumentoDTO dto : beneficiarioDTO.getDocumentos()) {
+			Documento domain = documentoMapper.toDocumento(dto);
+			domain.setBeneficiario(beneficiario);
+			domain.setDataAtualizacao(new Date());;
+			domain.setDataInclusao(new Date());
+			listaDomain.add(domain);
+		}
+		
+		documentoRepository.saveAll(listaDomain);
+	}
+	
+	public List<DocumentoDTO> findByBeneficiario(Beneficiario beneficiario) {
+		List<Documento> listaDomain = documentoRepository.findAllByBeneficiario(beneficiario);
+		List<DocumentoDTO> listaDTO = listaDomain.stream().map(d -> 
+		documentoMapper.toDocumentoDTO(d)
+		).collect(Collectors.toList());
+		
+		return listaDTO;
+	}
 
+	private void validaDocumentos(BeneficiarioDTO beneficiarioDTO) {
+		List<DocumentoDTO> documentos = beneficiarioDTO.getDocumentos();
+		if(documentos == null || documentos.isEmpty()) {
+			throw new BeneficiarioException("É necessário preencher pelo menos um documento do beneficiário.");
+		}
+		for(DocumentoDTO dto : documentos) {
+			if(dto.getTipoDocumento().isBlank() || dto.getTipoDocumento().isEmpty()) {
+				throw new DocumentoException("O tipo do documento precisa ser informado.");
+			}
+			if(dto.getDescricao().isBlank() || dto.getDescricao().isEmpty()) {
+				throw new DocumentoException("O número do documento precisa ser informado na descrição.");
+			}
+			Optional<Documento> domain = documentoRepository.findByDescricao(dto.getDescricao());
+			if(domain.isPresent()) {
+				if(domain.get().getBeneficiario().getNome().equals(beneficiarioDTO.getNome())) {
+					throw new DocumentoException(dto.getTipoDocumento() + " já está cadastrado para este beneficiário.");
+				}
+				throw new DocumentoException(dto.getTipoDocumento() + " já está cadastrado para outro beneficiário.");
+			}
+		}
+	}
 }

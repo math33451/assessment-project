@@ -1,22 +1,20 @@
 package br.com.ekan.assessment.infra.mapper;
 
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
-import org.mapstruct.NullValuePropertyMappingStrategy;
+import org.mapstruct.factory.Mappers;
 
 import br.com.ekan.assessment.infra.domain.Beneficiario;
 import br.com.ekan.assessment.infra.dto.BeneficiarioDTO;
 
-@Mapper(componentModel = "spring",nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+@Mapper(componentModel = "spring")
 public interface BeneficiarioMapper {
-
-	@Mapping(target = "documentos", ignore = true)
-	BeneficiarioDTO toBeneficiarioDTOSemDocumentos(Beneficiario beneficiario);
 	
-	BeneficiarioDTO toBeneficiarioDTOComDocumentos(Beneficiario beneficiario);
+	BeneficiarioMapper INSTANCE = Mappers.getMapper(BeneficiarioMapper.class);
+
+	BeneficiarioDTO toBeneficiarioDTO(Beneficiario beneficiario);
 	
 	Beneficiario toBeneficiario(BeneficiarioDTO beneficiarioDTO);
 	
-	void merge(BeneficiarioDTO dto, @MappingTarget Beneficiario beneficiario);
+	Beneficiario merge(BeneficiarioDTO dto, @MappingTarget Beneficiario beneficiario);
 }

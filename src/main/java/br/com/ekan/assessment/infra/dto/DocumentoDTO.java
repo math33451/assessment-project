@@ -1,15 +1,18 @@
 package br.com.ekan.assessment.infra.dto;
 
+import java.util.Date;
+
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-@EqualsAndHashCode(callSuper=true)
-public class DocumentoDTO extends BaseDocumentDTO{
+public class DocumentoDTO {
 
+	private Long id;
 	private String tipoDocumento;
 	private String descricao;
+	private Date dataInclusao;
+	private Date dataAtualizacao;
 
 }
