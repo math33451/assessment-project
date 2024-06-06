@@ -12,5 +12,4 @@ public interface BeneficiarioRepository extends JpaRepository<Beneficiario, Long
 
 	Optional<Beneficiario> findByNome(String nome);
 
-
 }

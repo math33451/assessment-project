@@ -60,16 +60,15 @@ public class BeneficiarioService {
 			doc.setDataAtualizacao(new Date());
 			doc.setBeneficiario(domain);
 		});
-//		documentoService.salvarTodosDocumentos(dto, domain);
 		beneficiarioRepository.save(domain);
 	}
 
 	public void editarBeneficiario(Long id, BeneficiarioDTO beneficiario) {
 		Beneficiario beneficiarioDomain = findById(id);
-		beneficiario.setDataAtualizacao(new Date());
-		Beneficiario beneficiarioEditado = beneficiarioMapper.merge(beneficiario, beneficiarioDomain);
-		
-		beneficiarioRepository.save(beneficiarioEditado);
+		beneficiarioMapper.merge(beneficiario, beneficiarioDomain);
+		documentoService.adicionaNovoDocumento(beneficiario, beneficiarioDomain);
+		beneficiarioDomain.setDataAtualizacao(new Date());
+		beneficiarioRepository.save(beneficiarioDomain);
 	}
 	
 	public void excluiBeneficiario(Long id) {

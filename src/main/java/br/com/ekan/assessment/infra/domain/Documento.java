@@ -26,8 +26,15 @@ public class Documento {
 	private Date dataInclusao;
 	private Date dataAtualizacao;
 	
-	@ManyToOne(fetch = FetchType.EAGER,cascade=CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.LAZY,cascade=CascadeType.ALL)
     @JoinColumn(name="beneficiario_id", nullable=false)
 	private Beneficiario beneficiario;
 
+	
+    public void setBeneficiario(Beneficiario b) {
+        this.beneficiario = b;
+        if (!b.getDocumentos().contains(this)) {
+            b.getDocumentos().add(this);
+        }
+    }
 }

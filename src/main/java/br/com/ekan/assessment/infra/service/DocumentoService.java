@@ -53,6 +53,35 @@ public class DocumentoService {
 		
 		return listaDTO;
 	}
+	
+	public void adicionaNovoDocumento(BeneficiarioDTO beneficiario, Beneficiario beneficiarioDomain) {
+		List<DocumentoDTO> listaDocumentoDTO = beneficiario.getDocumentos();
+		if(listaDocumentoDTO != null) {
+			List<Documento> listaDocDomain = documentoRepository.findAllByBeneficiario(beneficiarioDomain);
+			
+			listaDocumentoDTO.stream().forEach(doc ->{
+				for(Documento docDomain : listaDocDomain) {
+					if(doc.getTipoDocumento().equals(docDomain.getTipoDocumento())) {
+						if(!doc.getDescricao().equals(docDomain.getDescricao())){
+							docDomain.setDataAtualizacao(new Date());
+							docDomain.setDescricao(doc.getDescricao());
+							documentoRepository.save(docDomain);
+							return;
+						}else {
+							return;
+						}
+					}else {
+						doc.setDataInclusao(new Date());
+						doc.setDataAtualizacao(new Date());
+						Documento domainToSave = documentoMapper.toDocumento(doc);
+						domainToSave.setBeneficiario(beneficiarioDomain);
+						documentoRepository.save(domainToSave);
+						return;
+					}
+				}
+			});
+		}
+	}
 
 	private void validaDocumentos(BeneficiarioDTO beneficiarioDTO) {
 		List<DocumentoDTO> documentos = beneficiarioDTO.getDocumentos();

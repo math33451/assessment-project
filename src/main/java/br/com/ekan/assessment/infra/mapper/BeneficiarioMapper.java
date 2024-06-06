@@ -1,6 +1,7 @@
 package br.com.ekan.assessment.infra.mapper;
 
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.factory.Mappers;
 
@@ -16,5 +17,9 @@ public interface BeneficiarioMapper {
 	
 	Beneficiario toBeneficiario(BeneficiarioDTO beneficiarioDTO);
 	
+	@Mapping(target = "dataAtualizacao", ignore = true)
+	@Mapping(target = "dataInclusao", ignore = true)
+	@Mapping(target = "id", ignore = true)
+	@Mapping(target = "documentos", ignore = true)
 	Beneficiario merge(BeneficiarioDTO dto, @MappingTarget Beneficiario beneficiario);
 }
