@@ -1,4 +1,4 @@
-package br.com.ekan.assessment.infra.service;
+package br.com.ekan.assessment.service;
 
 import java.util.Date;
 import java.util.List;
@@ -8,12 +8,12 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import br.com.ekan.assessment.infra.domain.Beneficiario;
-import br.com.ekan.assessment.infra.dto.BeneficiarioDTO;
-import br.com.ekan.assessment.infra.dto.DocumentoDTO;
-import br.com.ekan.assessment.infra.exception.BeneficiarioException;
-import br.com.ekan.assessment.infra.mapper.BeneficiarioMapper;
-import br.com.ekan.assessment.infra.repository.BeneficiarioRepository;
+import br.com.ekan.assessment.domain.Beneficiario;
+import br.com.ekan.assessment.dto.BeneficiarioDTO;
+import br.com.ekan.assessment.dto.DocumentoDTO;
+import br.com.ekan.assessment.exception.BeneficiarioException;
+import br.com.ekan.assessment.mapper.BeneficiarioMapper;
+import br.com.ekan.assessment.repository.BeneficiarioRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 

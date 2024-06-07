@@ -1,4 +1,4 @@
-package br.com.ekan.assessment.infra.domain;
+package br.com.ekan.assessment.domain;
 
 import java.util.Date;
 import java.util.List;

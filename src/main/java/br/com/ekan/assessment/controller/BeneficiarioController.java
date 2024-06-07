@@ -1,4 +1,4 @@
-package br.com.ekan.assessment.infra.controller;
+package br.com.ekan.assessment.controller;
 
 import java.util.List;
 
@@ -13,51 +13,41 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.ekan.assessment.infra.domain.Documento;
-import br.com.ekan.assessment.infra.dto.BeneficiarioDTO;
-import br.com.ekan.assessment.infra.repository.DocumentoRepository;
-import br.com.ekan.assessment.infra.service.BeneficiarioService;
+import br.com.ekan.assessment.dto.BeneficiarioDTO;
+import br.com.ekan.assessment.service.BeneficiarioService;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 @RestController
-@RequestMapping("/beneficiario")
+@RequestMapping(value = "/beneficiario", produces="application/json", consumes="application/json")
 public class BeneficiarioController {
 
 	@Autowired
 	private BeneficiarioService beneficiarioService;
-	
-	@Autowired
-	private DocumentoRepository documento;
-	
-	@GetMapping("/documento")
-	public List<Documento> listar(){
-		return documento.findAll();
-	}
 
 	@GetMapping()
 	public List<BeneficiarioDTO> listarTodosBeneficiarios(){
 		return beneficiarioService.findAll();
 	}
 	
-	@GetMapping("/lista-documentos/{id}")
+	@GetMapping(value="/lista-documentos/{id}")
 	public BeneficiarioDTO buscarDocumentosPorId(@PathVariable Long id) throws Exception{
 		return beneficiarioService.findDocumentosById(id);
 	}
 	
-	@PostMapping("/salvar")
+	@PostMapping(value="/salvar")
 	public ResponseEntity<?> salvarBeneficiario(@RequestBody BeneficiarioDTO beneficiario) throws Exception{
 		beneficiarioService.save(beneficiario);
 		return ResponseEntity.ok("Novo membro salvo com sucesso.");
 	}
 	
-	@PutMapping("/{id}")
+	@PutMapping(value="/{id}")
 	public ResponseEntity<?> editarBeneficiario(@PathVariable Long id, @RequestBody BeneficiarioDTO beneficiario) throws Exception{
 		beneficiarioService.editarBeneficiario(id, beneficiario);
 		return ResponseEntity.ok("Alterações salvas com sucesso.");
 	}
 	
-	@DeleteMapping("/delete/{id}")
+	@DeleteMapping(value = "/delete/{id}")
 	public ResponseEntity<?> excluirBeneficiario(@PathVariable Long id){
 		beneficiarioService.excluiBeneficiario(id);
 		return ResponseEntity.ok().build();

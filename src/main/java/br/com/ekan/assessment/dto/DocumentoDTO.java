@@ -1,4 +1,4 @@
-package br.com.ekan.assessment.infra.dto;
+package br.com.ekan.assessment.dto;
 
 import java.util.Date;
 

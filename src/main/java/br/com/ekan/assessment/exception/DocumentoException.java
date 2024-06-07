@@ -1,4 +1,4 @@
-package br.com.ekan.assessment.infra.exception;
+package br.com.ekan.assessment.exception;
 
 public class DocumentoException extends RuntimeException{
 

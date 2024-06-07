@@ -1,12 +1,12 @@
-package br.com.ekan.assessment.infra.mapper;
+package br.com.ekan.assessment.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.factory.Mappers;
 
-import br.com.ekan.assessment.infra.domain.Beneficiario;
-import br.com.ekan.assessment.infra.dto.BeneficiarioDTO;
+import br.com.ekan.assessment.domain.Beneficiario;
+import br.com.ekan.assessment.dto.BeneficiarioDTO;
 
 @Mapper(componentModel = "spring")
 public interface BeneficiarioMapper {
